@@ -1,8 +1,11 @@
 [package]
 name = "small-sorted-map"
+description = "Heap-stored map based on a sorted list."
 version = "0.0.1-alpha.1"
 authors = ["Yotam Ofek <yotam.ofek@gmail.com>"]
 edition = "2018"
+license = "MIT"
+repository = "https://github.com/yotamofek/packed-vec/"
 
 [dependencies]
 serde_crate = { package = "serde", version = "1", optional = true }
