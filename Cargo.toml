@@ -1,7 +1,7 @@
 [package]
 name = "small-sorted-map"
 description = "Heap-stored map based on a sorted list."
-version = "0.0.1-alpha.1"
+version = "0.0.1-alpha.2"
 authors = ["Yotam Ofek <yotam.ofek@gmail.com>"]
 edition = "2018"
 license = "MIT"
