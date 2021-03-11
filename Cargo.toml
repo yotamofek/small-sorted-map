@@ -1,0 +1,16 @@
+[package]
+name = "small-sorted-map"
+version = "0.0.1-alpha.1"
+authors = ["Yotam Ofek <yotam.ofek@gmail.com>"]
+edition = "2018"
+
+[dependencies]
+serde_crate = { package = "serde", version = "1", optional = true }
+smallvec = { version = "1", features = ["const_generics"] }
+
+[dev-dependencies]
+serde_json = "1"
+
+[features]
+serde = ["serde_crate", "smallvec/serde"]
+default = ["serde"]
