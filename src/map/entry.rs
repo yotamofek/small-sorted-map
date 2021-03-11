@@ -1,4 +1,4 @@
-use std::{default::default, mem::swap};
+use std::mem::swap;
 
 use crate::SmallSortedMap;
 
@@ -98,12 +98,25 @@ where
 impl<'m, K, V, const SIZE: usize> Entry<'m, K, V, SIZE>
 where
     K: Ord + 'm,
+    V: 'm,
+{
+    pub fn or_insert_with<F>(self, f: F) -> &'m mut V
+    where
+        F: FnOnce() -> V,
+    {
+        match self {
+            Entry::Occupied(entry) => entry.into_mut(),
+            Entry::Vacant(entry) => entry.insert(f()),
+        }
+    }
+}
+
+impl<'m, K, V, const SIZE: usize> Entry<'m, K, V, SIZE>
+where
+    K: Ord + 'm,
     V: Default + 'm,
 {
     pub fn or_default(self) -> &'m mut V {
-        match self {
-            Entry::Occupied(entry) => entry.into_mut(),
-            Entry::Vacant(entry) => entry.insert(default()),
-        }
+        self.or_insert_with(V::default)
     }
 }

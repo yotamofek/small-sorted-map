@@ -8,6 +8,7 @@ use std::{
 
 use crate::{Entry, SmallSortedMap, ValuesIter};
 
+#[derive(Clone, Debug, Hash, PartialEq, Eq)]
 pub struct SmallCounter<K, const SIZE: usize>
 where
     K: Ord,

@@ -13,7 +13,7 @@ use smallvec::SmallVec;
 use self::entry::{Entry, EntryInner, OccupiedEntry, VacantEntry};
 use self::iter::ValuesIter;
 
-#[derive(Clone, Debug, Hash)]
+#[derive(Clone, Debug, Hash, PartialEq, Eq)]
 pub struct SmallSortedMap<K, V, const SIZE: usize>
 where
     K: Ord,
@@ -79,6 +79,11 @@ where
         let (.., removed_value) = self.storage.remove(pos);
 
         Some(removed_value)
+    }
+
+    #[inline]
+    pub fn clear(&mut self) {
+        self.storage.clear();
     }
 
     #[inline]
