@@ -2,6 +2,7 @@
 mod serde;
 
 use std::{
+    collections::HashMap,
     iter::FromIterator,
     ops::{AddAssign as _, Deref, Index},
 };
@@ -61,6 +62,14 @@ where
     #[inline]
     pub fn values(&self) -> ValuesIter<'_, K, usize> {
         self.storage.values()
+    }
+
+    #[inline]
+    pub fn retain<F>(&mut self, f: F)
+    where
+        F: FnMut(&K, &mut usize) -> bool,
+    {
+        self.storage.retain(f)
     }
 }
 
@@ -146,6 +155,26 @@ where
 
         counter.extend(iter.into_iter());
         counter
+    }
+}
+
+impl<K, const SIZE: usize> FromIterator<(K, usize)> for SmallCounter<K, SIZE>
+where
+    K: Ord,
+{
+    fn from_iter<T: IntoIterator<Item = (K, usize)>>(iter: T) -> Self {
+        Self {
+            storage: iter.into_iter().collect(),
+        }
+    }
+}
+
+impl<S, K, const SIZE: usize> From<HashMap<K, usize, S>> for SmallCounter<K, SIZE>
+where
+    K: Ord,
+{
+    fn from(map: HashMap<K, usize, S>) -> Self {
+        map.into_iter().collect()
     }
 }
 

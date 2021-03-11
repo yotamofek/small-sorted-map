@@ -4,6 +4,7 @@ pub mod iter;
 mod serde;
 
 use std::{
+    collections::HashMap,
     iter::FromIterator,
     ops::{Index, IndexMut},
 };
@@ -118,6 +119,14 @@ where
             slice: self.as_slice(),
         }
     }
+
+    #[inline]
+    pub fn retain<F>(&mut self, mut f: F)
+    where
+        F: FnMut(&K, &mut V) -> bool,
+    {
+        self.storage.retain(|(key, value)| f(key, value))
+    }
 }
 
 impl<K, V, const SIZE: usize> AsRef<[(K, V)]> for SmallSortedMap<K, V, SIZE>
@@ -217,6 +226,15 @@ where
         map.extend(iter);
 
         map
+    }
+}
+
+impl<S, K, V, const SIZE: usize> From<HashMap<K, V, S>> for SmallSortedMap<K, V, SIZE>
+where
+    K: Ord,
+{
+    fn from(map: HashMap<K, V, S>) -> Self {
+        map.into_iter().collect()
     }
 }
 
