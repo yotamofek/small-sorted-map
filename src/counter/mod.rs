@@ -33,6 +33,14 @@ where
         self.storage.entry(key).or_default().add_assign(1);
     }
 
+    #[inline]
+    pub fn combine(&mut self, other: Self) {
+        other.into_iter().for_each(|(key, count)| {
+            self.storage.entry(key).or_default().add_assign(count);
+        });
+    }
+
+    #[inline]
     pub fn remove(&mut self, key: K) -> bool {
         match self.storage.entry(key) {
             Entry::Occupied(mut entry) => {
