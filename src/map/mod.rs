@@ -6,9 +6,10 @@ mod serde;
 use std::{
     collections::HashMap,
     iter::FromIterator,
-    ops::{Index, IndexMut},
+    ops::{Index, IndexMut, RangeBounds},
 };
 
+pub use smallvec::Drain;
 use smallvec::SmallVec;
 
 use self::entry::{Entry, EntryInner, OccupiedEntry, VacantEntry};
@@ -126,6 +127,14 @@ where
         F: FnMut(&K, &mut V) -> bool,
     {
         self.storage.retain(|(key, value)| f(key, value))
+    }
+
+    #[inline]
+    pub fn drain<R>(&mut self, range: R) -> Drain<[(K, V); SIZE]>
+    where
+        R: RangeBounds<usize>,
+    {
+        self.storage.drain(range)
     }
 }
 

@@ -34,8 +34,8 @@ where
     }
 
     #[inline]
-    pub fn combine(&mut self, other: Self) {
-        other.into_iter().for_each(|(key, count)| {
+    pub fn combine(&mut self, other: &mut Self) {
+        other.storage.drain(..).for_each(|(key, count)| {
             self.storage.entry(key).or_default().add_assign(count);
         });
     }
